@@ -25,15 +25,24 @@
   </table>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, PropType } from "vue";
+
+interface Participant {
+  name: string;
+  birth: string;
+  email: string;
+  phone: string;
+}
+
+export default defineComponent({
   props: {
     participants: {
-      type: Array,
+      type: Array as PropType<Participant[]>,
       required: true,
     },
   },
-};
+});
 </script>
 
 <style scoped>

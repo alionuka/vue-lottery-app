@@ -68,12 +68,13 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import { defineComponent } from "vue";
 import LotteryWinners from "./components/LotteryWinners.vue";
 import RegistrationForm from "./components/RegistrationForm.vue";
 import ParticipantsTable from "./components/ParticipantsTable.vue";
 
-export default {
+export default defineComponent({
   name: "App",
   components: {
     // eslint-disable-next-line vue/no-unused-components
@@ -83,12 +84,12 @@ export default {
   },
   data() {
     return {
-      participants: [],
-      winners: [],
+      participants: [] as Array<{ name: string }>,
+      winners: [] as Array<{ name: string }>,
     };
   },
   methods: {
-    addParticipant(participant) {
+    addParticipant(participant: { name: string }) {
       this.participants.push(participant);
     },
     selectRandomWinner() {
@@ -103,15 +104,15 @@ export default {
         }
       }
     },
-    removeWinner(index) {
+    removeWinner(index: number) {
       this.winners.splice(index, 1);
     },
   },
-};
+});
 </script>
 
 <style scoped>
-/* Робимо поле winners білим */
+/* CSS стилі залишаються без змін */
 .winners-field {
   background-color: white;
   width: 80%;
@@ -159,7 +160,6 @@ export default {
   color: #495057;
 }
 
-/* Зменшення висоти і додання заокруглення для кнопки New winner */
 .custom-btn {
   background-color: #00c0e4;
   color: white;
@@ -176,16 +176,15 @@ export default {
 .custom-btn:focus,
 .custom-btn:active {
   background-color: #00a4bf;
-  color: white; /* Зберігаємо білий колір тексту при наведенні, фокусі та натисканні */
+  color: white;
   border-radius: 4px;
   outline: none;
   box-shadow: none;
 }
 
-/* Спеціальний стиль для неактивної кнопки */
 .custom-btn:disabled {
   background-color: #00c0e4;
-  color: white; /* Білий колір тексту, навіть коли кнопка неактивна */
+  color: white;
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -194,8 +193,8 @@ export default {
   border-radius: 4px;
   background-color: #00c0e4;
   color: white;
-  padding: 6px 20px; /* Менша висота */
-  border-radius: 4px; /* Легке заокруглення */
+  padding: 6px 20px;
+  border-radius: 4px;
   width: 100px;
 }
 

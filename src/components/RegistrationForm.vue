@@ -82,8 +82,10 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent } from "vue";
+
+export default defineComponent({
   data() {
     return {
       form: {
@@ -91,21 +93,31 @@ export default {
         birth: "",
         email: "",
         phone: "",
+      } as {
+        name: string;
+        birth: string;
+        email: string;
+        phone: string;
       },
-      errors: {},
+      errors: {} as Record<string, string>,
     };
   },
   mounted() {
     // Викликає календар при кліку на полі дати
-    const dateInput = document.getElementById("birth");
-    if (dateInput && dateInput.showPicker) {
+    const dateInput = document.getElementById("birth") as HTMLInputElement & {
+      showPicker?: () => void;
+    };
+    if (dateInput && typeof dateInput.showPicker === "function") {
       dateInput.addEventListener("click", () => {
-        dateInput.showPicker();
+        if (typeof dateInput.showPicker === "function") {
+          dateInput.showPicker(); // Викликаємо showPicker після перевірки
+        }
       });
     }
   },
+
   methods: {
-    validateField(field) {
+    validateField(field: string) {
       this.errors[field] = "";
 
       if (field === "name" && !this.form.name) {
@@ -148,16 +160,16 @@ export default {
         this.errors = {}; // Очищаємо помилки після відправки
       }
     },
-    validEmail(email) {
+    validEmail(email: string) {
       const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       return re.test(email);
     },
-    validPhone(phone) {
+    validPhone(phone: string) {
       const re = /^\+?\d{10,14}$/;
       return re.test(phone);
     },
   },
-};
+});
 </script>
 
 <style scoped>
@@ -175,24 +187,20 @@ export default {
   box-shadow: none;
 }
 
-/* Стиль для тексту-підказки */
 .form-control::placeholder {
   color: #adb5bd; /* Світло-сірий колір для тексту-підказки */
 }
 
-/* Приховання значка календаря для поля дати */
 input[type="date"]::-webkit-calendar-picker-indicator {
   display: none;
 }
 
-/* Вимкнення кольору для автозаповнених полів */
 input:-webkit-autofill {
-  background-color: #f5f5f5 !important; /* Світло-сірий фон для автозаповнених полів */
-  -webkit-box-shadow: 0 0 0px 1000px #f5f5f5 inset; /* Зберігаємо світло-сірий фон */
-  color: #495057; /* Колір тексту */
+  background-color: #f5f5f5 !important;
+  -webkit-box-shadow: 0 0 0px 1000px #f5f5f5 inset;
+  color: #495057;
 }
 
-/* Спеціально для поля дати */
 input[type="date"] {
   color: #495057;
 }
@@ -201,17 +209,15 @@ input[type="date"]::-webkit-datetime-edit-text,
 input[type="date"]::-webkit-datetime-edit-month-field,
 input[type="date"]::-webkit-datetime-edit-day-field,
 input[type="date"]::-webkit-datetime-edit-year-field {
-  color: #adb5bd; /* Світло-сірий колір для тексту в полі дати */
+  color: #adb5bd;
 }
 
-/* Червона границя для помилкових полів */
 .is-invalid {
-  border-color: #dc3545; /* Червоний колір для невірних полів */
+  border-color: #dc3545;
 }
 
-/* Зелена границя для правильних полів */
 .is-valid {
-  border-color: #28a745; /* Зелений колір для правильних полів */
+  border-color: #28a745;
 }
 
 .form-label {

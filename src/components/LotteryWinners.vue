@@ -33,17 +33,26 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import { defineComponent, PropType } from "vue";
+
+interface Participant {
+  name: string;
+  birth: string;
+  email: string;
+  phone: string;
+}
+
+export default defineComponent({
   props: {
     participants: {
-      type: Array,
+      type: Array as PropType<Participant[]>,
       required: true,
     },
   },
   data() {
     return {
-      winners: [], // State to hold selected winners
+      winners: [] as Participant[], // State to hold selected winners
     };
   },
   methods: {
@@ -62,12 +71,12 @@ export default {
         }
       }
     },
-    removeWinner(index) {
+    removeWinner(index: number) {
       // Remove a winner from the list when 'x' is clicked
       this.winners.splice(index, 1);
     },
   },
-};
+});
 </script>
 
 <style scoped>
